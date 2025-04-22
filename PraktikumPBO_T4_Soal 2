@@ -1,0 +1,56 @@
+class TaskNotFoundError(Exception):
+    """Exception yang digunakan untuk menangani kasus ketika tugas tidak ditemukan."""
+    pass
+
+def main():
+    daftar_tugas = []
+
+    while True:
+        print("\nPilih aksi:")
+        print("1. Tambah tugas")
+        print("2. Hapus tugas")
+        print("3. Tampilkan daftar tugas")
+        print("4. Keluar")
+
+        try:
+            pilihan = int(input("Masukkan pilihan (1/2/3/4): "))
+            
+            if pilihan == 1:
+                tugas = input("Masukkan tugas yang ingin ditambahkan: ")
+                if not tugas.strip():
+                    raise ValueError("Input tidak boleh kosong.")
+                daftar_tugas.append(tugas)
+                print("Tugas berhasil ditambahkan!")
+
+            elif pilihan == 2:
+                nomor_tugas = int(input("Masukkan nomor tugas yang ingin dihapus: "))
+                if nomor_tugas < 1 or nomor_tugas > len(daftar_tugas):
+                    raise TaskNotFoundError(f"Tugas dengan nomor {nomor_tugas} tidak ditemukan.")
+                removed_task = daftar_tugas.pop(nomor_tugas - 1)
+                print(f"Tugas '{removed_task}' berhasil dihapus.")
+
+            elif pilihan == 3:
+                if not daftar_tugas:
+                    print("Daftar tugas kosong.")
+                else:
+                    print("Daftar Tugas:")
+                    for i, tugas in enumerate(daftar_tugas, start=1):
+                        print(f"{i}. {tugas}")
+
+            elif pilihan == 4:
+                print("Keluar dari program.")
+                break
+
+            else:
+                print("Pilihan tidak valid. Harap masukkan angka 1, 2, 3, atau 4.")
+
+        except ValueError as ve:
+            print(f"Error: {ve}")
+        except TaskNotFoundError as tnfe:
+            print(f"Error: {tnfe}")
+        except Exception as e:
+            print(f"Terjadi kesalahan: {e}")
+
+# Menjalankan program
+if __name__ == "__main__":
+    main()
